@@ -3,7 +3,6 @@ const { StatusCodes } = require('http-status-codes')
 const { BadRequestError, NotFoundError } = require('../errors')
 
 const getAllJobs = async (req, res) => {
-  console.log(req.query);
   const {
     status,
     jobType,
