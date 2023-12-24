@@ -41,7 +41,36 @@ const login = async (req, res) => {
     },})
 }
 
+const updateUser = async (req, res) => {
+  const {name, email, lastName, location} = req.body
+  if(!name || !email || !lastName || !location){
+    throw new BadRequestError('please provide all neccessary values')
+  }
+  const {userId, name: oname} = req.user
+  const user = await User.findOne({_id: userId})
+  if(!user)
+    throw new UnauthenticatedError('Invalid Credentials')
+
+  user.email = email
+  user.name = name
+  user.lastName = lastName
+  user.location = location
+
+  await user.save()
+  const token = user.createJWT()
+
+  res.status(StatusCodes.OK).json({ 
+    user: { 
+      email: user.email,
+      lastName: user.lastName,
+      location: user.location,
+      name: user.name,
+      token 
+    },})
+}
+
 module.exports = {
   register,
   login,
+  updateUser
 }
