@@ -42,6 +42,9 @@ const login = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
+  if(req.user.testUser){
+    throw new UnauthenticatedError('This is not available in Demo mode')
+  }
   const {name, email, lastName, location} = req.body
   if(!name || !email || !lastName || !location){
     throw new BadRequestError('please provide all neccessary values')
